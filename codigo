@@ -1,0 +1,54 @@
+show databases;
+
+use loja_informatica;
+
+db.createCollection("cliente");
+
+show collections;
+
+db.cliente.find();
+
+db.cliente.insertOne({
+    "nome": "jefté"
+});
+
+db.cliente.insertOne({
+    "nome": "jefté",
+    "idade": 35,
+    "pets": ["dora", "sabrina"],
+    "endereco": {
+        "logradouro": "Sossego"
+    }
+});
+
+db.cliente.insertMany([
+    { "nome": "Brenno" },
+    { "nome": "João" },
+    { "nome": "MAria" },
+    { "nome": "José" },
+    { "nome": "Noé" }
+]);
+
+db.cliente.find({
+    "nome": "José"
+});
+
+db.cliente.find({
+    "_id": ObjectId("6a7bbab007ff2cf8649f68a9")
+});
+
+db.cliente.updateOne(
+    { "nome": "MAria" },
+    { $set: { "nome": "Maria" } }
+);
+
+db.cliente.updateOne(
+    { "nome": "Maria" },
+    {
+        $set: {
+            "endereco": {
+                "logradouro": "sossego"
+            }
+        }
+    }
+);
