@@ -1,17 +1,37 @@
+// CRUD - MONGODB
+
+
+// ==================================================
+// CREATE
+// ==================================================
+
+
+// BANCO DE DADOS
+
+// Exibir os bancos de dados
 show databases;
 
+// Criar/selecionar banco de dados
 use loja_informatica;
 
+
+// COLLECTIONS
+
+// Criar nova collection
 db.createCollection("cliente");
 
+// Mostrar todas as collections
 show collections;
 
-db.cliente.find();
 
+// INSERÇÃO DE DOCUMENTOS
+
+// Inserir um documento
 db.cliente.insertOne({
     "nome": "jefté"
 });
 
+// Inserir um documento com diferentes tipos de dados
 db.cliente.insertOne({
     "nome": "jefté",
     "idade": 35,
@@ -21,6 +41,7 @@ db.cliente.insertOne({
     }
 });
 
+// Inserir vários documentos de uma vez
 db.cliente.insertMany([
     { "nome": "Brenno" },
     { "nome": "João" },
@@ -29,19 +50,42 @@ db.cliente.insertMany([
     { "nome": "Noé" }
 ]);
 
+
+// ==================================================
+// READ
+// ==================================================
+
+
+// CONSULTA DE DOCUMENTOS
+
+// Mostrar todos os documentos/objetos
+db.cliente.find();
+
+// Buscar documento pelo campo
 db.cliente.find({
     "nome": "José"
 });
 
+// Buscar documento pelo identificador único
 db.cliente.find({
     "_id": ObjectId("6a7bbab007ff2cf8649f68a9")
 });
 
+
+// ==================================================
+// UPDATE
+// ==================================================
+
+
+// ATUALIZAÇÃO DE DOCUMENTOS
+
+// Atualizar um campo existente
 db.cliente.updateOne(
     { "nome": "MAria" },
     { $set: { "nome": "Maria" } }
 );
 
+// Adicionar um novo campo ao documento
 db.cliente.updateOne(
     { "nome": "Maria" },
     {
@@ -52,3 +96,4 @@ db.cliente.updateOne(
         }
     }
 );
+
