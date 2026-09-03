@@ -1,25 +1,5 @@
 # CRUD - MongoDB
 
-![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-47A248?style=flat&logo=mongodb&logoColor=white)
-![Status](https://img.shields.io/badge/status-em%20andamento-yellow)
-![Disciplina](https://img.shields.io/badge/disciplina-Bancos%20de%20Dados%20NoSQL-blue)
-
-> Repositório de estudos da disciplina **Bancos de Dados NoSQL**, organizado seguindo o conceito de **CRUD** (Create, Read, Update, Delete), conforme orientação do professor (referência: `crud-operations.png`).
-
----
-
-## Sumário
-
-- [Create](#create)
-  - [Banco de Dados](#banco-de-dados)
-  - [Collections](#collections)
-  - [Inserção de Documentos](#inserção-de-documentos)
-- [Read](#read)
-- [Update](#update)
-- [Delete](#delete)
-
----
-
 ## Create
 
 ### Banco de Dados
@@ -216,15 +196,3 @@ db.products.remove({});
 | `deleteOne()` | Remove o primeiro documento que corresponde ao filtro |
 | `deleteMany()` | Remove todos os documentos que correspondem ao filtro |
 | `remove()` | Método alternativo/mais antigo para remoção de documentos |
-
----
-
-## Referência da Atividade
-
-> ![crud-operations](crud-operations.png)
->
-> Imagem fornecida pelo professor como base para a organização do conteúdo em CRUD.
-
----
-
-<p align="center">Estudos da disciplina de <b>Bancos de Dados NoSQL</b></p>
