@@ -12,6 +12,8 @@ show databases;
 use loja_informatica;
 ```
 
+O `show databases` lista todos os bancos existentes no servidor. O `use` seleciona o banco `loja_informatica`; se ele ainda não existir, o MongoDB só o cria de fato quando o primeiro dado é gravado dentro dele.
+
 ### Collections
 
 ```javascript
@@ -21,6 +23,8 @@ db.createCollection("cliente");
 // Mostrar todas as collections
 show collections;
 ```
+
+O `createCollection` cria a estrutura `cliente` dentro do banco atual. O `show collections` lista todas as collections já existentes no banco selecionado.
 
 ### Inserção de Documentos
 
@@ -68,6 +72,8 @@ db.products.insertMany([
 ]);
 ```
 
+O `insertOne()` adiciona um único documento à collection, e cada documento pode ter uma estrutura diferente — em `cliente`, por exemplo, alguns documentos têm apenas `nome`, enquanto outros têm campos aninhados como `endereco` e arrays como `pets`. O MongoDB também aceita valores decimais diretamente, como em `price: 20.3`, e permite definir manualmente o `_id` de um documento (como em `"my-custom-id"`), em vez de deixar o banco gerar um `ObjectId` automático. Já o `insertMany()` insere vários documentos de uma vez, recebidos em formato de array.
+
 **Métodos utilizados em Create**
 
 | Método | Descrição |
@@ -103,6 +109,8 @@ db.products.find({
     "price": { $gt: 10 } // gt = Greater than
 });
 ```
+
+O `find()` sem parâmetros retorna todos os documentos da collection. Passando um filtro entre chaves, ele retorna apenas os documentos que correspondem à condição informada — seja por um campo comum, como `nome` ou `name`, seja pelo `_id`, que é o identificador único gerado (ou definido) para cada documento. O `$gt` é um operador de comparação e filtra apenas os documentos em que o campo `price` é maior que o valor informado.
 
 **Operadores utilizados em Read**
 
@@ -158,6 +166,8 @@ db.products.replaceOne(
 );
 ```
 
+O `updateOne()` localiza o primeiro documento que corresponde ao filtro e aplica a alteração indicada com `$set`, que tanto corrige o valor de um campo existente (como o nome "MAria" para "Maria") quanto adiciona um campo novo ao documento (como o `endereco`). Quando o filtro é vazio (`{}`), a atualização é aplicada ao primeiro documento da collection, sem distinção. Já o `updateMany()` aplica a mesma alteração a **todos** os documentos que atendem ao filtro — nesse caso, com filtro vazio, a todos os documentos da collection. O `replaceOne()` funciona de forma diferente: em vez de alterar campos específicos, ele substitui o documento inteiro pelo novo objeto informado, mantendo apenas o `_id` original.
+
 **Métodos utilizados em Update**
 
 | Método | Descrição |
@@ -188,6 +198,8 @@ db.products.deleteMany({
 // Remover documentos usando o método remove() (alternativo)
 db.products.remove({});
 ```
+
+O `deleteOne()` remove apenas o primeiro documento encontrado — com filtro vazio, remove o primeiro da collection; com um filtro específico, remove o primeiro que corresponder a ele. O `deleteMany()` remove todos os documentos que atendem ao filtro, como os que foram marcados anteriormente com `marker: "toDelete"` no exemplo do Update. Por fim, `remove()` é um método mais antigo do MongoDB que também remove documentos, mas hoje é considerado descontinuado em favor de `deleteOne()` e `deleteMany()`.
 
 **Métodos utilizados em Delete**
 
