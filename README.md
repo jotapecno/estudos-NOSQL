@@ -4,7 +4,7 @@ Repositório de estudos da disciplina de Bancos de Dados NoSQL, com foco em Mong
 
 ## Conteúdo
 
-- [`codigo.md`](./codigo.md) — comandos aprendidos em aula, organizados por CRUD (Create, Read, Update, Delete).
+- [`conteudo.md`](./conteudo.md) — comandos aprendidos em aula, organizados por CRUD (Create, Read, Update, Delete).
 - [`atividade_pratica_antes_depois.md`](./atividade_pratica_antes_depois.md) — atividade prática "Antes e Depois", com o cenário da loja online e os comandos utilizados em cada exercício.
 
 ## Tecnologia
