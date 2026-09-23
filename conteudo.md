@@ -208,3 +208,117 @@ O `deleteOne()` remove apenas o primeiro documento encontrado — com filtro vaz
 | `deleteOne()` | Remove o primeiro documento que corresponde ao filtro |
 | `deleteMany()` | Remove todos os documentos que correspondem ao filtro |
 | `remove()` | Método alternativo/mais antigo para remoção de documentos |
+
+---
+
+## Relacionamentos entre Documentos
+
+No MongoDB não existem "joins" como em bancos relacionais. Para modelar relações entre dados, existem duas estratégias principais: **embarcar** (guardar o dado relacionado dentro do próprio documento) ou usar **referência** (guardar apenas o `ObjectId` de outro documento, feito em outra collection).
+
+### One-to-One (um para um)
+
+**Embarcado**
+
+```javascript
+db.patients.insertOne({
+    name: "Jefté",
+    age: 35,
+    diseaseSummary: {
+        diseases: ["cold", "broken leg"]
+    }
+});
+```
+
+Os dados relacionados (`diseaseSummary`) ficam guardados dentro do próprio documento do paciente, como um subdocumento.
+
+**Por referência**
+
+```javascript
+db.persons.insertOne({
+    name: "Jefté",
+    age: 35,
+    salary: 3000
+});
+
+db.cars.insertOne({
+    model: "BMW",
+    price: 40000,
+    owner: ObjectId('6aa9e2cee9c288ce1241317e')
+});
+```
+
+Aqui, `persons` e `cars` são collections separadas. O documento do carro não guarda os dados da pessoa, apenas o `ObjectId` dela no campo `owner`, criando a referência entre os dois.
+
+### One-to-Many (um para muitos)
+
+**Embarcado**
+
+```javascript
+db.questionThreads.insertOne({
+    creator: "Jefté",
+    question: "How does that work?",
+    answers: [
+        { text: "Like that." },
+        { text: "Thanks!" }
+    ]
+});
+```
+
+As várias respostas (`answers`) ficam embarcadas como um array de subdocumentos dentro da própria thread de pergunta.
+
+**Referência**
+
+```javascript
+db.cities.insertOne({
+    name: "New York City",
+    coordinates: { lat: 21, lng: 55 }
+});
+
+db.citizens.insertMany([
+    { name: "Jefté Goes", cityId: ObjectId("5b98d6b44d01c52e1637a99f") },
+    { name: "Brenno Salvador", cityId: ObjectId("5b98d6b44d01c52e1637a99f") }
+]);
+```
+
+Cada cidadão, na collection `citizens`, guarda apenas o `cityId` referenciando o `_id` do documento correspondente em `cities`. Vários cidadãos podem referenciar a mesma cidade.
+
+### Many-to-Many (muitos para muitos)
+
+**Embarcado**
+
+```javascript
+db.customers.insertOne({
+    name: "Jefté",
+    age: 35
+});
+
+db.customers.updateOne(
+    {},
+    { $set: { orders: [{ title: "A Book", price: 12.99, quantity: 2 }] } }
+);
+```
+
+Os pedidos (`orders`) do cliente são embarcados diretamente dentro do próprio documento do cliente, como um array de subdocumentos.
+
+**Referência**
+
+```javascript
+db.authors.insertMany([
+    { name: "Jorge Amado", age: 78, address: { street: "Bahia" } },
+    { name: "Graciliano Ramos", age: 55, address: { street: "Rio de Janeiro" } }
+]);
+
+db.books.updateOne(
+    {},
+    { $set: { authors: [ObjectId("5b98d9e44d01c52e1637a9a6"), ObjectId("5b98d9e44d01c52e1637a9a7")] } }
+);
+```
+
+Um livro pode ter vários autores, e um autor pode ter vários livros. Por isso, o documento do livro guarda um array de `ObjectId`s referenciando os autores correspondentes na collection `authors` — essa é a forma típica de modelar relação muitos-para-muitos por referência.
+
+### Resumo: Embarcado vs Referência
+
+| Estratégia | Quando usar | Vantagem | Desvantagem |
+|---|---|---|---|
+| **Embarcado** | Dados sempre acessados juntos, relação simples (1:1 ou 1:N pequeno) | Leitura rápida (um único documento) | Documento pode crescer muito; duplicação de dados |
+| **Referência** | Dados grandes, reutilizados por vários documentos, ou relação N:N | Evita duplicação, mantém documentos menores | Precisa de consultas extras (ou `$lookup`) para juntar os dados |
